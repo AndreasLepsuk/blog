@@ -2,25 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-
-class PostController extends Controller
+class AdminPostController extends Controller
 {
     public function index()
     {
-        return view('posts.index', [
-            'posts' => Post::latest()->filter(
-                request(['search', 'category', 'author'])
-                )->paginate(6)->withQueryString()
-        ]);
-    }
-
-    public function show(Post $post)
-    {
-        return view('posts.show', [
-            'post' => $post
+        return view('admin.posts.index', [
+            'posts'=> Post::paginate(50)
         ]);
     }
 
@@ -46,5 +38,10 @@ class PostController extends Controller
         Post::create($attributes);
 
         return redirect('/');
+    }
+
+    public function edit(Post $post) 
+    {
+        return view('admin.posts.edit', ['post' => $post]);
     }
 }
